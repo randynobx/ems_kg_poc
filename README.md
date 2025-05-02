@@ -101,7 +101,7 @@ RETURN i.incident_key, i.inc_date
 
 ## References
 
-- [NFIRS 5.0 Complete Reference Guide (FEMA/USFA)](https://www.usfa.fema.gov/downloads/pdf/nfirs/NFIRS_Complete_Reference_Guide_2015.pdf)
+- [NFIRS 5.0 Complete Reference Guide (FEMA/USFA)](https://www.usfa.fema.gov/downloads/pdf/nfirs/nfirs_complete_reference_guide_2015.pdf)
 - [Neo4j Cypher Manual](https://neo4j.com/docs/cypher-manual/current/)
 - [APX Data NFIRS Field Reference](https://apxdata.com/nfirs/)
 
