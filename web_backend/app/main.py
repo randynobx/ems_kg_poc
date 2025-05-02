@@ -1,14 +1,9 @@
-import os
-from configparser import ConfigParser
-
 from fastapi import FastAPI
 
 from .api.query import router as query_router
 from .api.upload import router as upload_router
+from .config import Settings
 
-# Load config.ini
-config = ConfigParser()
-config.read(os.getenv("CONFIG_PATH", "/app/config.ini"))
 
 app = FastAPI(
     title="EMS Knowledge Graph API",
@@ -16,7 +11,7 @@ app = FastAPI(
 )
 
 # Make config accessible to routers
-app.state.config = config
+app.state.config = Settings()
 
 # from .api.query import router as query_router  # For future endpoints
 

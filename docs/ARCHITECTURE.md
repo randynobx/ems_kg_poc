@@ -64,14 +64,32 @@ graph. It is designed for robust data validation, versioned code lookups, and sc
 
 ---
 
-## Configuration
+## Configuration & Secrets Management
 
-- All service and path settings are managed via `config.ini` (not `.env`).
-- Cypher queries are stored in the `queries/` directory and referenced by the backend.
+- **Local/Development:**
+    - `config.ini` is used for all configuration (Neo4j URI, user, password, paths).
+    - Never commit secrets to version control; add `config.ini` and `docker_secrets/` to `.gitignore`.
 
+- **Production:**
+    - If `config.ini` is absent, the backend loads credentials securely from AWS Secrets Manager (or another vault).
+    - Docker Compose injects Neo4j credentials using Docker secrets (`NEO4J_AUTH_FILE`).
+    - Backend can be extended to use Docker secrets or environment variables as well.
+
+---
+
+## Best Practices
+
+- **Modular FastAPI structure:** Use routers for separation of upload/import and query endpoints.
+- **Centralized config:** Use a single `Settings` class to load configuration from `config.ini` or secrets manager.
+- **Secrets:** Use Docker secrets and/or AWS Secrets Manager for all credentials in production.
+- **Validation:** All CSVs are validated before import; errors are returned to the user.
+- **Bulk import:** Uses batched Cypher queries for efficient data loading.
+- **Monitoring & Security:** Neo4j should be run with TLS enabled, and access restricted to backend and trusted clients.
 ---
 
 ## References
 
 - [README.md](../README.md)
 - [NFIRS 5.0 Reference Guide](https://www.usfa.fema.gov/downloads/pdf/nfirs/NFIRS_Complete_Reference_Guide_2015.pdf)
+- [FastAPI Best Practices](https://fastapi.tiangolo.com/project-generation/) [1][5][7][9]
+- [AWS Secrets Manager](https://docs.aws.amazon.com/secretsmanager/latest/userguide/intro.html) [6][8][10][12][14][16]

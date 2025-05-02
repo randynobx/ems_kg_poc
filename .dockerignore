@@ -36,3 +36,4 @@ docker-compose.yml
 config.ini
 README.md
 doc/
+docker/secrets

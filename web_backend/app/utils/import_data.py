@@ -15,7 +15,6 @@ def import_ems_csv(file_path: str, db_connection: Optional[
     if db_connection is None:
         raise ValueError("A valid Neo4j session is required.")
 
-    # Load Cypher query from file
     if not os.path.isfile(cypher_file):
         raise FileNotFoundError(f"Cypher file not found: {cypher_file}")
     with open(cypher_file, "r", encoding="utf-8") as f:

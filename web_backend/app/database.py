@@ -1,25 +1,27 @@
-from fastapi import Request
-from neo4j import Driver, GraphDatabase
+from collections.abc import Generator
 
+from neo4j import GraphDatabase
+
+from .config import Settings
+
+settings = Settings()
 
 class Neo4jConnection:
-    def __init__(self, uri, user, password):
-        self._driver: Driver = GraphDatabase.driver(uri, auth=(user, password))
+    def __init__(self):
+        self._driver = GraphDatabase.driver(
+            settings.neo4j_uri,
+            auth=(settings.neo4j_user, settings.neo4j_password)
+        )
 
     def close(self):
-        if self._driver:
-            self._driver.close()
+        self._driver.close()
 
     def get_session(self):
         return self._driver.session()
 
 
-def get_db(request: Request):
-    config = request.app.state.config
-    uri = config.get("neo4j", "uri")
-    user = config.get("neo4j", "user")
-    password = config.get("neo4j", "password")
-    conn = Neo4jConnection(uri, user, password)
+def get_db() -> Generator:
+    conn = Neo4jConnection()
     try:
         yield conn
     finally:
