@@ -1,0 +1,146 @@
+type,code,label
+RaceCode,1,White
+RaceCode,2,Black or African American
+RaceCode,3,American Indian or Alaska Native
+RaceCode,4,Asian
+RaceCode,5,Native Hawaiian or Other Pacific Islander
+RaceCode,6,Other
+RaceCode,98,Not Recorded
+RaceCode,99,Unknown
+EthnicityCode,1,Hispanic or Latino
+EthnicityCode,2,Not Hispanic or Latino
+EthnicityCode,98,Not Recorded
+EthnicityCode,99,Unknown
+GenderCode,1,Male
+GenderCode,2,Female
+GenderCode,3,Other
+GenderCode,98,Not Recorded
+GenderCode,99,Unknown
+HumanFactorCode,1,Alcohol Use
+HumanFactorCode,2,Drug Use
+HumanFactorCode,3,Physical Disability
+HumanFactorCode,4,Mental Disability
+HumanFactorCode,5,Other
+HumanFactorCode,98,Not Recorded
+HumanFactorCode,99,Unknown
+InjurySiteCode,1,Head
+InjurySiteCode,2,Neck
+InjurySiteCode,3,Torso
+InjurySiteCode,4,Arm
+InjurySiteCode,5,Leg
+InjurySiteCode,6,Other
+InjurySiteCode,98,Not Recorded
+InjurySiteCode,99,Unknown
+InjuryTypeCode,1,Burn
+InjuryTypeCode,2,Laceration
+InjuryTypeCode,3,Fracture
+InjuryTypeCode,4,Contusion
+InjuryTypeCode,5,Other
+InjuryTypeCode,98,Not Recorded
+InjuryTypeCode,99,Unknown
+CauseIllnessCode,1,Cardiac
+CauseIllnessCode,2,Respiratory
+CauseIllnessCode,3,Trauma
+CauseIllnessCode,4,Stroke
+CauseIllnessCode,5,Seizure
+CauseIllnessCode,6,Other
+CauseIllnessCode,98,Not Recorded
+CauseIllnessCode,99,Unknown
+SafetyEquipmentCode,1,Helmet
+SafetyEquipmentCode,2,Seatbelt
+SafetyEquipmentCode,3,Airbag
+SafetyEquipmentCode,4,Protective Clothing
+SafetyEquipmentCode,5,Child Safety Seat
+SafetyEquipmentCode,6,Other
+SafetyEquipmentCode,98,Not Recorded
+SafetyEquipmentCode,99,Unknown
+ArrestRhythmCode,1,Ventricular Fibrillation
+ArrestRhythmCode,2,Asystole
+ArrestRhythmCode,3,Pulseless Electrical Activity
+ArrestRhythmCode,4,Normal Sinus Rhythm
+ArrestRhythmCode,5,Other
+ArrestRhythmCode,98,Not Recorded
+ArrestRhythmCode,99,Unknown
+PatientStatusCode,1,Alive
+PatientStatusCode,2,Dead
+PatientStatusCode,3,Unknown
+PatientStatusCode,98,Not Recorded
+PatientStatusCode,99,Unknown
+EMSDispositionCode,1,Transported
+EMSDispositionCode,2,Refused Care
+EMSDispositionCode,3,Dead at Scene
+EMSDispositionCode,4,No Treatment Required
+EMSDispositionCode,5,Other
+EMSDispositionCode,98,Not Recorded
+EMSDispositionCode,99,Unknown
+CareLevelCode,1,Basic Life Support
+CareLevelCode,2,Intermediate Life Support
+CareLevelCode,3,Advanced Life Support
+CareLevelCode,98,Not Recorded
+CareLevelCode,99,Unknown
+ProcedureCode,00,None
+ProcedureCode,01,Airway adjuncts
+ProcedureCode,02,Suctioning
+ProcedureCode,03,Oxygen administration
+ProcedureCode,04,Assisted ventilation
+ProcedureCode,05,CPR
+ProcedureCode,06,Defibrillation
+ProcedureCode,07,Airway obstruction clearance
+ProcedureCode,08,Intraosseous infusion
+ProcedureCode,09,IV therapy
+ProcedureCode,10,Medication administration IM
+ProcedureCode,11,Medication administration IV
+ProcedureCode,12,Medication administration PO
+ProcedureCode,13,Medication administration IN
+ProcedureCode,14,12-lead ECG acquisition
+ProcedureCode,15,Cardiac pacing
+ProcedureCode,16,Medication administration
+ProcedureCode,17,Cardiac monitoring
+ProcedureCode,18,Immobilization
+ProcedureCode,19,Hemorrhage control
+ProcedureCode,20,Burn care
+ProcedureCode,21,Childbirth assistance
+ProcedureCode,22,Spinal motion restriction
+ProcedureCode,23,Fracture reduction
+ProcedureCode,24,Dislocation reduction
+ProcedureCode,25,Wound care
+ProcedureCode,26,Medical device troubleshooting
+ProcedureCode,27,Psychological intervention
+ProcedureCode,28,Vital signs monitoring
+ProcedureCode,29,Blood glucose monitoring
+ProcedureCode,30,Nebulizer treatment
+ProcedureCode,31,Impaled object stabilization
+ProcedureCode,32,Decontamination
+ProcedureCode,33,Hypothermia management
+ProcedureCode,34,Hyperthermia management
+ProcedureCode,35,Allergic reaction management
+ProcedureCode,36,Poisoning management
+ProcedureCode,37,Behavioral emergency management
+ProcedureCode,38,Diabetic emergency management
+ProcedureCode,39,Stroke assessment
+ProcedureCode,40,Trauma triage
+ProcedureCode,41,Patient assessment
+ProcedureCode,42,Patient reassessment
+ProcedureCode,43,Disentanglement
+ProcedureCode,44,Extrication
+ProcedureCode,45,Technical rescue
+ProcedureCode,46,Hazmat intervention
+ProcedureCode,47,Mass casualty triage
+ProcedureCode,48,Infection control
+ProcedureCode,49,BLS airway management
+ProcedureCode,50,ALS airway management
+ProcedureCode,51,Needle decompression
+ProcedureCode,52,Chest tube insertion
+ProcedureCode,53,Surgical cricothyrotomy
+ProcedureCode,54,Ultrasound use
+ProcedureCode,55,Capnography monitoring
+ProcedureCode,56,Point-of-care testing
+ProcedureCode,57,Community paramedicine
+ProcedureCode,58,Telemedicine consultation
+ProcedureCode,59,Palliative care
+ProcedureCode,60,Termination of resuscitation
+ProcedureCode,96,Other procedure
+ProcedureCode,97,Not applicable
+ProcedureCode,98,Not recorded
+ProcedureCode,99,Unknown
+ProcedureCode,NN,No Procedures

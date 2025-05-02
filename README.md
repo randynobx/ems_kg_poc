@@ -82,7 +82,7 @@ If the script prints `CSV validation successful!`, your file is ready for import
 
 ## Knowledge Graph Schema
 
-See [schema.md](schema.md) for a full, up-to-date schema description.
+See [schema.md](docs/schema.md) for a full, up-to-date schema description.
 
 **Highlights:**
 - All coded fields (e.g., race, gender, procedures) are linked to their respective code nodes.

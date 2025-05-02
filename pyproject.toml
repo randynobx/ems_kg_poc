@@ -1,0 +1,14 @@
+[tool.poetry]
+name = "ems-kg-poc"
+version = "0.1.0"
+description = "A prototype EMS knowledge graph for NFIRS 5.0, supporting versioned code lookups and bulk Neo4j import."
+authors = ["Randy Nance <randynobx@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+neo4j = "^5.0"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
