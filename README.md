@@ -1,134 +1,123 @@
-# NFIRS 5.0 EMS Module Knowledge Graph
+# EMS 5.0 Knowledge Graph Prototype
 
-This project provides a robust, future-proof Neo4j graph database schema for the NFIRS 5.0 EMS Module. It includes code lookup tables, a normalized main data model, and Cypher queries for efficient import and querying.
+A containerized, version-aware Neo4j knowledge graph for NFIRS 5.0 EMS data, with robust validation and bulk import.
 
 ---
 
 ## Table of Contents
 
 - [Overview](#overview)
-- [Features](#features)
-- [Setup & Import Instructions](#setup--import-instructions)
-- [Knowledge Graph Schema](#knowledge-graph-schema)
-- [Best Practices](#best-practices)
-- [Sample Queries](#sample-queries)
+- [Architecture](#architecture)
+- [Directory Structure](#directory-structure)
+- [Configuration](#configuration)
+- [Setup & Usage](#setup--usage)
+- [CSV Validation & Import](#csv-validation--import)
 - [References](#references)
 
 ---
 
 ## Overview
 
-This repository enables the storage and analysis of EMS data from the National Fire Incident Reporting System (NFIRS) in a highly normalized, code-driven Neo4j graph database. All coded fields are linked to lookup nodes for clarity and analytics.
+This project enables scalable, standards-compliant management and analysis of EMS data from the National Fire Incident
+Reporting System (NFIRS) 5.0. It features:
+
+- A normalized Neo4j graph schema with versioned code lookups
+- Automated CSV validation before import
+- Bulk import using batched Cypher queries
+- Modular, maintainable Docker-based deployment
 
 ---
 
-## Features
+## Architecture
 
-- **Normalized data model**: All coded fields reference lookup nodes (e.g., race, gender, procedures).
-- **NFIRS-compliant**: Follows NFIRS 5.0 EMS documentation and codebooks.
-- **Future-proof**: Only the Incident node stores the NFIRS version, making upgrades easy.
-- **Efficient querying**: Supports powerful graph traversals for clinical, operational, and demographic analytics.
+See [doc/ARCHITECTURE.md](doc/ARCHITECTURE.md) for a full system overview and deployment diagram.
 
----
+**Key Components:**
 
-## Setup & Import Instructions
-
-1. **Place all CSV files** in your Neo4j `import` directory.
-
-2. **Validate Your EMS Data CSV**  
-   Before importing, run the validation script to ensure your data meets all requirements:
-```
-python validate_nfirs_csv.py short_ems.csv
-```
-
-3. **Load Lookup Tables**  
-   Run the following Cypher script to load all code tables:
-```
-:source lookup_table_import.cypher
-```
-
-4. **Load Main EMS Data**  
-Run the main data load script:
-```
-:source nfirs_ems_main_data_load.cypher
-```
-
-5. **Verify Data**  
-Example:
-```
-MATCH (p:Patient)-[:HAS_RACE]->(rc:RaceCode)
-RETURN p.id, rc.label LIMIT 10
-```
+- **Neo4j Database Container:** Stores the EMS knowledge graph, preloaded with lookup codes, supports APOC.
+- **Web Backend Container:** Python (FastAPI) app for CSV upload, validation, and import.
+- **Shared Volumes:** For CSV file transfer and data persistence.
 
 ---
 
-## CSV Validation
+## Directory Structure
 
-The provided `validate_nfirs_csv.py` script checks:
-- Required headers and fields
-- Date and datetime formats
-- Numeric and decimal fields
-- All coded fields (including procedures and factors)
-- Detailed error messages for any issues
-
-**Usage:**
 ```
-python validate_nfirs_csv.py <your_csv_file>
+ems-kg-poc/
+├── docker/
+│ └── neo4j/
+│ └── entrypoint.sh
+├── web_backend/
+│ ├── app/
+│ │ ├── init.py
+│ │ ├── main.py
+│ │ ├── database.py
+│ │ └── utils/
+│ │ ├── validation.py
+│ │ └── import_data.py
+│ ├── Dockerfile
+│ └── pyproject.toml
+├── queries/
+│ └── load_ems_csv.cypher
+├── lookup_codes/
+│ └── v5.0_lookup_codes.csv
+├── sample_data/
+│ └── main.csv
+├── docker-compose.yml
+├── config.ini
+├── .gitignore
+├── .dockerignore
+├── README.md
+└── doc/
+└── ARCHITECTURE.md
 ```
-
-If the script prints `CSV validation successful!`, your file is ready for import.
 
 ---
 
-## Knowledge Graph Schema
+## Configuration
 
-See [schema.md](docs/schema.md) for a full, up-to-date schema description.
+All service, path, and query settings are managed via `config.ini` at the project root.
 
-**Highlights:**
-- All coded fields (e.g., race, gender, procedures) are linked to their respective code nodes.
-- Injuries are modeled as nodes with relationships to both site and type codes.
-- All temporal fields are stored as Neo4j `DATE` or `DATETIME` types.
-- Only the `Incident` node stores the NFIRS version.
+**Example `config.ini`:**
+
+```
+[neo4j]
+uri = bolt://neo4j_db:7687
+user = neo4j
+password = your_password
+
+[paths]
+data_dir = ./sample_data
+queries_dir = ./queries
+upload_dir = ./web_backend/app/uploads
+```
 
 ---
 
-## Best Practices
+## Setup & Usage
 
-- **Load code tables first.** All data nodes reference these lookup nodes.
-- **Do not duplicate the `VERSION` property** on child nodes; store it only on the `Incident` node.
-- **Use relationships** for all coded fields to maximize query flexibility and future-proofing.
-- **Validate array pairs** (e.g., injury site/type) for alignment after import.
+1. **Configure** your settings in `config.ini`.
+2. **Build and start** the stack with Docker Compose: `docker-compose up --build`
+3. **Access the web backend** at [http://localhost:8000](http://localhost:8000) (default FastAPI port).
+4. **Upload your EMS CSV** via the `/upload/` endpoint.
+5. **Validate**: The backend will return validation results.
+6. **Import**: Use the `/import/` endpoint to load validated data into Neo4j.
+7. **Explore data** in Neo4j Browser at [http://localhost:7474](http://localhost:7474).
 
 ---
 
-## Sample Queries
+## CSV Validation & Import
 
-**Find all patients with a head injury:**
-```
-MATCH (p:Patient)-[:HAS_CLINICAL_DETAILS]->()-[:HAS_INJURY]->(inj)-[:HAS_SITE]->(site:InjurySiteCode {code: "1"})
-RETURN p.id, site.label
-```
-
-**List all patients who received CPR:**
-```
-MATCH (p:Patient)-[:HAS_PROCEDURE]->(pc:ProcedureCode {code: "05"})
-RETURN p.id, pc.label
-```
-
-**Get all incidents from a specific version:**
-```
-MATCH (i:Incident {version: "5.0"})
-RETURN i.incident_key, i.inc_date
-```
+- **Validation** is performed using `web_backend/app/utils/validation.py` before any import.
+- **Bulk import** uses the Cypher query in `queries/load_ems_csv.cypher`, loaded and executed by the backend.
+- **Lookup codes** must be preloaded in the Neo4j `/import` directory (see `lookup_codes/`).
 
 ---
 
 ## References
 
-- [NFIRS 5.0 Complete Reference Guide (FEMA/USFA)](https://www.usfa.fema.gov/downloads/pdf/nfirs/nfirs_complete_reference_guide_2015.pdf)
-- [Neo4j Cypher Manual](https://neo4j.com/docs/cypher-manual/current/)
-- [APX Data NFIRS Field Reference](https://apxdata.com/nfirs/)
-
----
-
-**For questions or contributions, please open an issue or pull request.**
+- [doc/ARCHITECTURE.md](doc/ARCHITECTURE.md)
+- [doc/SCHEMA.md](doc/SCHEMA.md)
+- [NFIRS 5.0 Complete Reference Guide](https://www.usfa.fema.gov/downloads/pdf/nfirs/NFIRS_Complete_Reference_Guide_2015.pdf)
+- [Neo4j Documentation](https://neo4j.com/docs/)
+- [FastAPI Documentation](https://fastapi.tiangolo.com/)

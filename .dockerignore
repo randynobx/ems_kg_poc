@@ -1,0 +1,38 @@
+# Bytecode and cache
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+*.egg
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE/project files
+.vscode/
+.idea/
+*.swp
+
+# Git
+.git
+.gitignore
+
+# Local uploads and data not needed in build
+web_backend/app/uploads/
+data_uploads/
+sample_data/
+lookup_codes/
+neo4j_data/
+import_done
+
+# Environment files
+.env
+.env.*
+
+# Docker Compose and config files (not needed in image)
+docker-compose.yml
+config.ini
+README.md
+doc/
