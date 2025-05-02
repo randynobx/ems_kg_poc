@@ -9,6 +9,8 @@ readme = "README.md"
 python = "^3.12"
 neo4j = "^5.0"
 fastapi = "^0.115.12"
+uvicorn = { extras = ["standard"], version = "^0.18.2" }
+python-multipart = "^0.0.20"
 
 [build-system]
 requires = ["poetry-core"]

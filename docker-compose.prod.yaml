@@ -1,9 +1,0 @@
-services:
-  web_backend:
-    environment:
-      - APP_ENV=production
-    # No config.ini volume mount
-
-secrets:
-  neo4j_auth_file:
-    external: true  # Reference swarm/cloud secrets

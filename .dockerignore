@@ -32,8 +32,7 @@ import_done
 .env.*
 
 # Docker Compose and config files (not needed in image)
-docker-compose.yml
+docker/compose
 config.ini
 README.md
 doc/
-docker/secrets

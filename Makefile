@@ -1,9 +1,10 @@
 # Variables
-COMPOSE := docker compose
-COMPOSE_BASE := -f docker-compose.yml
-COMPOSE_DEV := $(COMPOSE_BASE) -f docker-compose.dev.yml
-COMPOSE_PROD := $(COMPOSE_BASE) -f docker-compose.prod.yml
-CSV_FILE ?= samples/main.csv
+COMPOSE := docker compose -p ems_kg_stack
+COMPOSE_DIR := ./docker/compose
+COMPOSE_BASE := -f $(COMPOSE_DIR)/base.yaml
+COMPOSE_DEV := $(COMPOSE_BASE) -f $(COMPOSE_DIR)/dev.yaml
+COMPOSE_PROD := $(COMPOSE_BASE) -f $(COMPOSE_DIR)/prod.yaml
+CSV_FILE ?= sample_data/nfirs_all_incident_pdr_2023__ems.csv
 SECRETS_DIR := docker/secrets
 
 .PHONY: help dev prod validate-csv test down clean prune secrets

@@ -29,6 +29,7 @@ sample_data/*.csv  # Only commit compressed zip files
 .env
 .env.*
 docker/secrets/*
+config.ini
 
 # Neo4j data (never commit database state)
 neo4j_data/

@@ -1,0 +1,11 @@
+services:
+  web_backend:
+    volumes:
+      - ./config.ini:/app/config.ini
+    ports:
+      - "8000:8000"
+
+  neo4j_db:
+    ports:
+      - "7474:7474"
+      - "7687:7687"

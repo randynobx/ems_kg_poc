@@ -16,7 +16,7 @@ if grep -q '\[neo4j\]' "$CONFIG_FILE"; then
     exit 1
   fi
 
-  echo "$NEO4J_PASSWORD" > "$SECRETS_DIR/neo4j_auth.txt"
+  echo "neo4j/$NEO4J_PASSWORD" > "$SECRETS_DIR/neo4j_auth.txt"
   chmod 600 "$SECRETS_DIR/neo4j_auth.txt"
   echo "Created Neo4j auth secret"
 else

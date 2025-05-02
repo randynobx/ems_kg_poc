@@ -5,47 +5,19 @@ management, and bulk import.
 
 ---
 
-## Table of Contents
-
-- [Overview](#overview)
-- [Architecture](#architecture)
-- [Directory Structure](#directory-structure)
-- [Configuration](#configuration)
-- [Setup & Usage](#setup--usage)
-- [Scripts](#scripts)
-- [Makefile Commands](#makefile-commands)
-- [CSV Validation & Import](#csv-validation--import)
-- [References](#references)
-
----
-
 ## Overview
 
 This project enables scalable, standards-compliant management and analysis of EMS data from the National Fire Incident
 Reporting System (NFIRS) 5.0. It features:
 
 - A normalized Neo4j graph schema with versioned code lookups
-- Automated CSV validation before import
-- Bulk import using batched Cypher queries
+- Automated CSV validation and bulk import
 - Modular, maintainable Docker-based deployment
 - Secure secrets management using Docker secrets
 
 ---
 
-## Architecture
-
-See [doc/ARCHITECTURE.md](doc/ARCHITECTURE.md) for a full system overview and deployment diagram.
-
-**Key Components:**
-
-- **Neo4j Database Container:** Stores the EMS knowledge graph, preloaded with lookup codes, supports APOC, and is
-  secured with Docker secrets.
-- **Web Backend Container:** Python (FastAPI) app for CSV upload, validation, and import.
-- **Shared Volumes:** For CSV file transfer and data persistence.
-
----
-
-## Directory Structure
+## Project Structure
 
 
 ```
@@ -56,121 +28,79 @@ ems-kg-poc/
 ├── docker-compose.prod.yml
 ├── docker/
 │ └── secrets/
-│ └── neo4j_auth.txt
 ├── scripts/
-│ ├── create_docker_secrets.sh
-│ └── validate_nfirs_csv.sh
-├── config.ini # For local development only (not in prod)
+├── config.ini # For local development only
 ├── queries/
-│ └── load_ems_csv.cypher
 ├── lookup_codes/
-│ └── v5.0_lookup_codes.csv
 ├── sample_data/
-│ └── main.csv
-├── web_backend/
-│ ├── Dockerfile
-│ └── app/
-│ ├── init.py
-│ ├── main.py
-│ ├── config.py
-│ ├── database.py
-│ ├── api/
-│ │ ├── init.py
-│ │ ├── upload.py
-│ │ └── query.py
-│ └── utils/
-│ ├── validation.py
-│ └── import_data.py
+├── web_backend/ # See web_backend/README.md for details
 └── doc/
 └── ARCHITECTURE.md
 ```
 
 ---
 
-## Configuration
+## Quick Start
 
-- All service, path, and query settings are managed via `config.ini` at the project root (for development).
-- **Production:** Uses Docker secrets for Neo4j credentials (`docker/secrets/neo4j_auth.txt`), not `config.ini`.
-- Never commit `config.ini` or secret files to version control (see `.gitignore`).
+### Local Development
 
-**Example `config.ini`:**
-
-```
-[neo4j]
-uri = bolt://neo4j_db:7687
-user = neo4j
-password = your_password
-
-[paths]
-data_dir = ./sample_data
-queries_dir = ./queries
-upload_dir = ./web_backend/app/uploads
-```
-
----
-
-## Setup & Usage
-
-### **Local Development**
-
-1. **Create and configure `config.ini`** (see above).
-2. **Create Docker secrets for Neo4j:** `make secrets`
+1. **Configure `config.ini`** (see example in `web_backend/README.md`).
+2. **Create Docker secrets:** `make secrets`
 3. **Start the development environment:** `make dev`
-4. **Access the web backend** at [http://localhost:8000](http://localhost:8000).
-5. **Upload and validate your EMS CSV** via the `/upload/` endpoint.
-6. **Import** validated data into Neo4j via the `/upload/import/` endpoint.
-7. **Explore data** in Neo4j Browser at [http://localhost:7474](http://localhost:7474).
 
-### **Production**
+### Production
 
-1. **Do NOT include `config.ini`**. Use Docker secrets for all credentials.
-2. **Ensure `docker/secrets/neo4j_auth.txt`** is present and contains `neo4j/your_password`.
-3. **Start the production environment:** `make prod`
+1. **Use Docker secrets for Neo4j credentials.**
+2. **Start the production environment:** `make prod`
 
 ---
 
-## Scripts
+## Docker Compose Files
 
-All utility shell scripts are in the `scripts/` directory:
+All Docker Compose files are now in `./docker/compose/`:
 
-- `scripts/create_docker_secrets.sh`: Generates Docker secrets from `config.ini`.
-- `scripts/validate_nfirs_csv.sh`: Validates a CSV file using the Python validation module.
+- `base.yaml` – Base configuration (all environments)
+- `dev.yaml` – Development overrides (mounts config.ini, etc.)
+- `prod.yaml` – Production overrides (uses Docker secrets)
 
----
-
-## Makefile Commands
+### Makefile Commands
 
 | Command             | Description                                        |
 |---------------------|----------------------------------------------------|
-| `make help`         | Show all available commands                        |
-| `make dev`          | Start development environment with config.ini      |
+| `make dev`          | Start development environment (with config.ini)    |
 | `make prod`         | Start production environment (uses Docker secrets) |
-| `make validate-csv` | Validate a CSV file (set `CSV_FILE=path/to/file`)  |
-| `make test`         | Run unit tests                                     |
 | `make down`         | Stop and remove containers                         |
 | `make clean`        | Remove containers, networks, and volumes           |
-| `make prune`        | Full cleanup (containers, volumes, images, cache)  |
+| `make prune`        | Full Docker cleanup                                |
 | `make secrets`      | Create Docker secrets from config.ini              |
+| `make validate-csv` | Validate a CSV file (set `CSV_FILE=path/to/file`)  |
+| `make test`         | Run unit tests                                     |
 
-**Example:**
+**Example usage:**
+```
+make dev
+make prod
+make validate-csv CSV_FILE=sample_data/main.csv
+```
 
-```
-make validate-csv CSV_FILE=sample_data/nfirs_all_incident_pdr_2023__ems.csv
-```
+### Notes
+
+- All Docker Compose commands are routed through the Makefile, so you never need to type out the full
+  `-f ./docker/compose/...` paths.
+- Update any scripts or documentation to reference the new compose file locations if they previously used files in the
+  project root.
 
 ---
 
-## CSV Validation & Import
+## Documentation
 
-- **Validation** is performed using `web_backend/app/utils/validation.py` before any import.
-- **Bulk import** uses the Cypher query in `queries/load_ems_csv.cypher`, loaded and executed by the backend.
-- **Lookup codes** must be preloaded in the Neo4j `/import` directory (see `lookup_codes/`).
+- **Backend API, validation, and import:** [web_backend/README.md](web_backend/app/README.md)
+- **Architecture and deployment:** [doc/ARCHITECTURE.md](doc/ARCHITECTURE.md)
 
 ---
 
 ## References
 
-- [doc/ARCHITECTURE.md](doc/ARCHITECTURE.md)
 - [NFIRS 5.0 Complete Reference Guide](https://www.usfa.fema.gov/downloads/pdf/nfirs/NFIRS_Complete_Reference_Guide_2015.pdf)
 - [Neo4j Documentation](https://neo4j.com/docs/)
 - [FastAPI Documentation](https://fastapi.tiangolo.com/)
