@@ -1,0 +1,9 @@
+code,label
+1,Cardiac
+2,Respiratory
+3,Trauma
+4,Stroke
+5,Seizure
+6,Other
+98,Not Recorded
+99,Unknown

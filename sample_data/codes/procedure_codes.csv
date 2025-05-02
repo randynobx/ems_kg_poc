@@ -1,0 +1,66 @@
+code,label
+00,None
+01,Airway adjuncts
+02,Suctioning
+03,Oxygen administration
+04,Assisted ventilation
+05,CPR
+06,Defibrillation
+07,Airway obstruction clearance
+08,Intraosseous infusion
+09,IV therapy
+10,Medication administration IM
+11,Medication administration IV
+12,Medication administration PO
+13,Medication administration IN
+14,12-lead ECG acquisition
+15,Cardiac pacing
+16,Medication administration
+17,Cardiac monitoring
+18,Immobilization
+19,Hemorrhage control
+20,Burn care
+21,Childbirth assistance
+22,Spinal motion restriction
+23,Fracture reduction
+24,Dislocation reduction
+25,Wound care
+26,Medical device troubleshooting
+27,Psychological intervention
+28,Vital signs monitoring
+29,Blood glucose monitoring
+30,Nebulizer treatment
+31,Impaled object stabilization
+32,Decontamination
+33,Hypothermia management
+34,Hyperthermia management
+35,Allergic reaction management
+36,Poisoning management
+37,Behavioral emergency management
+38,Diabetic emergency management
+39,Stroke assessment
+40,Trauma triage
+41,Patient assessment
+42,Patient reassessment
+43,Disentanglement
+44,Extrication
+45,Technical rescue
+46,Hazmat intervention
+47,Mass casualty triage
+48,Infection control
+49,BLS airway management
+50,ALS airway management
+51,Needle decompression
+52,Chest tube insertion
+53,Surgical cricothyrotomy
+54,Ultrasound use
+55,Capnography monitoring
+56,Point-of-care testing
+57,Community paramedicine
+58,Telemedicine consultation
+59,Palliative care
+60,Termination of resuscitation
+96,Other procedure
+97,Not applicable
+98,Not recorded
+99,Unknown

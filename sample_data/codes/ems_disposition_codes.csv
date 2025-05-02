@@ -1,0 +1,8 @@
+code,label
+1,Transported
+2,Refused Care
+3,Dead at Scene
+4,No Treatment Required
+5,Other
+98,Not Recorded
+99,Unknown
