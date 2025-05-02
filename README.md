@@ -23,19 +23,21 @@ Reporting System (NFIRS) 5.0. It features:
 ```
 ems-kg-poc/
 ├── Makefile
-├── docker-compose.yml
-├── docker-compose.dev.yml
-├── docker-compose.prod.yml
 ├── docker/
+│ └── compose/ 
+│   ├── base.yml
+│   ├── dev.yml
+│   ├── prod.yml
 │ └── secrets/
 ├── scripts/
 ├── config.ini # For local development only
 ├── queries/
-├── lookup_codes/
+├── nfirs_lookup_codes/
 ├── sample_data/
 ├── web_backend/ # See web_backend/README.md for details
-└── doc/
-└── ARCHITECTURE.md
+└── docs/
+  └── ARCHITECTURE.md
+  └── SCHEMA.md
 ```
 
 ---
