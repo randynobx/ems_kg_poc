@@ -35,24 +35,48 @@ This repository enables the storage and analysis of EMS data from the National F
 
 1. **Place all CSV files** in your Neo4j `import` directory.
 
-2. **Load Lookup Tables**  
+2. **Validate Your EMS Data CSV**  
+   Before importing, run the validation script to ensure your data meets all requirements:
+```
+python validate_nfirs_csv.py short_ems.csv
+```
+
+3. **Load Lookup Tables**  
    Run the following Cypher script to load all code tables:
 ```
 :source lookup_table_import.cypher
 ```
 
-3. **Load Main EMS Data**  
+4. **Load Main EMS Data**  
 Run the main data load script:
 ```
 :source nfirs_ems_main_data_load.cypher
 ```
 
-4. **Verify Data**  
+5. **Verify Data**  
 Example:
 ```
 MATCH (p:Patient)-[:HAS_RACE]->(rc:RaceCode)
 RETURN p.id, rc.label LIMIT 10
 ```
+
+---
+
+## CSV Validation
+
+The provided `validate_nfirs_csv.py` script checks:
+- Required headers and fields
+- Date and datetime formats
+- Numeric and decimal fields
+- All coded fields (including procedures and factors)
+- Detailed error messages for any issues
+
+**Usage:**
+```
+python validate_nfirs_csv.py <your_csv_file>
+```
+
+If the script prints `CSV validation successful!`, your file is ready for import.
 
 ---
 
