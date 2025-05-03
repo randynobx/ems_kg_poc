@@ -46,7 +46,18 @@ ems-kg-poc/
 
 ### Local Development
 
-1. **Configure `config.ini`** (see example in `web_backend/README.md`).
+1. **Configure `config.ini`**
+
+```
+[neo4j]
+uri = bolt://neo4j-db:7687
+user = neo4j
+password = your_password
+
+[paths]
+queries_dir = /queries
+upload_dir = /app/uploads
+```
 2. **Create Docker secrets:** `make secrets`
 3. **Start the development environment:** `make dev`
 
