@@ -20,7 +20,7 @@ Thumbs.db
 .gitignore
 
 # Local uploads and data not needed in build
-web_backend/app/uploads/
+uploads/
 data_uploads/
 sample_data/
 lookup_codes/

@@ -1,11 +1,11 @@
 import os
-from typing import Optional
 
 from neo4j import Session
 
 
-def import_ems_csv(file_path: str, db_connection: Optional[
-    Session], cypher_file: str = "queries/load_ems_csv.cypher") -> None:
+def import_ems_csv(
+    file_path: str, db_connection: Session | None, cypher_file: str = "queries/load_ems_csv.cypher"
+) -> None:
     """
     Import EMS CSV data into Neo4j using a Cypher query loaded from file.
     :param file_path: Path to the CSV file (must be accessible to Neo4j in /import).
@@ -22,4 +22,9 @@ def import_ems_csv(file_path: str, db_connection: Optional[
 
     # Pass only the filename to Neo4j (it looks in its own /import directory)
     csv_filename = os.path.basename(file_path)
-    db_connection.run(cypher_query, csv_path=f"file:///{csv_filename}")
+
+    db_connection.run(
+        query="CALL apoc.cypher.runMany($cypherScript, {csvPath: $csvPath})",
+        cypherScript=cypher_query,
+        csvPath=f"file:///uploads/{csv_filename}",
+    )

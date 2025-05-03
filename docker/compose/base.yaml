@@ -1,24 +1,39 @@
 services:
-  neo4j_db:
+  neo4j-db:
     image: neo4j:5.19
-    container_name: neo4j_db
+    container_name: neo4j-db
     environment:
-      - EXTENSION_SCRIPT=/entrypoint.sh
+      - NEO4J_AUTH=neo4j/myPassword
+      - NEO4J_PLUGINS=["apoc"]
       - NEO4J_dbms_security_procedures_unrestricted=apoc.*
       - NEO4J_apoc_import_file_enabled=true
       - NEO4J_apoc_export_file_enabled=true
       - NEO4J_apoc_import_file_use__neo4j__config=true
     volumes:
-      - ../neo4j/entrypoint.sh:/entrypoint.sh:ro
-      - ../../nfirs_lookup_codes:/import
+      - ../../nfirs_lookup_codes:/import/nfirs_lookup_codes
+      - ../../uploads:/import/uploads
       - neo4j_data:/data
     secrets:
       - neo4j_auth_file
     healthcheck:
-      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://localhost:7474 || exit 1"]
+      test: ["CMD-SHELL", "wget --no-verbose --tries=1 --spider http://neo4j-db:7474 || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 10
+    networks:
+      - ems_network
+
+  data_importer:
+    image: neo4j:5.19
+    depends_on:
+      neo4j-db:
+        condition: service_healthy
+    volumes:
+      - ../../scripts/import_lookup_nodes.sh:/import_lookup_nodes.sh
+      - ../../nfirs_lookup_codes:/import/nfirs_lookup_codes
+    secrets:
+      - neo4j_auth_file
+    command: ["sh", "/import_lookup_nodes.sh"]
     networks:
       - ems_network
 
@@ -26,16 +41,13 @@ services:
     build: ../../web_backend
     container_name: web_backend
     depends_on:
-      neo4j_db:
+      neo4j-db:
         condition: service_healthy
     volumes:
-      - ./web_backend/app/uploads:/app/uploads
-      - ./queries:/queries
+      - ../../uploads:/app/uploads
+      - ../../queries/:/queries/
     networks:
       - ems_network
-
-volumes:
-  neo4j_data:
 
 secrets:
   neo4j_auth_file:
@@ -44,3 +56,6 @@ secrets:
 networks:
   ems_network:
     driver: bridge
+
+volumes:
+  neo4j_data:

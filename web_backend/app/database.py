@@ -9,7 +9,7 @@ settings = Settings()
 class Neo4jConnection:
     def __init__(self):
         self._driver = GraphDatabase.driver(
-            settings.neo4j_uri,
+            uri=settings.neo4j_uri,
             auth=(settings.neo4j_user, settings.neo4j_password)
         )
 

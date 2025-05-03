@@ -12,7 +12,7 @@ SECRETS_DIR := docker/secrets
 help:  ## Display this help
 	@awk 'BEGIN {FS = ":.*##"; printf "\nUsage:\n  make \033[36m<target>\033[0m\n\nTargets:\n"} /^[a-zA-Z_-]+:.*?##/ { printf "  \033[36m%-15s\033[0m %s\n", $$1, $$2 }' $(MAKEFILE_LIST)
 
-dev:  ## Start development environment with config.ini
+dev: secrets  ## Start development environment with config.ini
 	$(COMPOSE) $(COMPOSE_DEV) up --build
 
 prod:  ## Start production environment (uses secrets)

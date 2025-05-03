@@ -7,7 +7,6 @@ class Settings:
         self.neo4j_uri = None
         self.neo4j_user = None
         self.neo4j_password = None
-        self.data_dir = None
         self.queries_dir = None
         self.upload_dir = None
 
@@ -19,7 +18,7 @@ class Settings:
 
     def _load_from_ini(self, config_file: Path):
         config = configparser.ConfigParser()
-        config.read(str(config_file))
+        config.read(config_file)
 
         # Neo4j settings
         self.neo4j_uri = config.get("neo4j", "uri", fallback=None)
@@ -27,7 +26,6 @@ class Settings:
         self.neo4j_password = config.get("neo4j", "password", fallback=None)
 
         # Paths
-        self.data_dir = config.get("paths", "data_dir", fallback=None)
         self.queries_dir = config.get("paths", "queries_dir", fallback=None)
         self.upload_dir = config.get("paths", "upload_dir", fallback=None)
 

@@ -1,4 +1,4 @@
-type,code,label
+type,code,description
 RaceCode,1,White
 RaceCode,2,Black or African American
 RaceCode,3,American Indian or Alaska Native

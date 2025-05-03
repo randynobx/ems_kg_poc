@@ -12,8 +12,8 @@ router = APIRouter()
 
 @router.post("/", summary="Upload and validate EMS CSV file")
 async def upload_csv(request: Request, file: UploadFile = File(...)):
-    config = request.app.state.config
-    upload_dir = config.get("paths", "upload_dir", fallback="/app/uploads")
+    settings = request.app.state.config
+    upload_dir = settings.upload_dir
     os.makedirs(upload_dir, exist_ok=True)
     file_location = os.path.join(upload_dir, file.filename)
     with open(file_location, "wb") as f:
@@ -31,14 +31,12 @@ async def upload_csv(request: Request, file: UploadFile = File(...)):
 
 @router.post("/import/", summary="Import validated EMS CSV into Neo4j")
 def import_csv(request: Request, filename: str, db=Depends(get_db)):
-    config = request.app.state.config
-    upload_dir = config.get("paths", "upload_dir", fallback="/app/uploads")
-    queries_dir = config.get("paths", "queries_dir", fallback="/queries")
-    file_location = os.path.join(upload_dir, filename)
+    settings = request.app.state.config
+    file_location = os.path.join(settings.upload_dir, filename)
     if not os.path.isfile(file_location):
         raise HTTPException(status_code=404, detail="File not found")
     try:
-        cypher_path = os.path.join(queries_dir, "load_ems_csv.cypher")
+        cypher_path = os.path.join(settings.queries_dir, "load_ems_csv.cypher")
         import_ems_csv(file_location, db.get_session(), cypher_file=cypher_path)
         return {"status": "success", "message": "CSV imported into Neo4j."}
     except Exception as e:

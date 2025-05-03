@@ -9,6 +9,7 @@ mkdir -p "$SECRETS_DIR"
 
 # Neo4j credentials (required)
 if grep -q '\[neo4j\]' "$CONFIG_FILE"; then
+  NEO4J_USER=$(awk -F= '/^user/ {print $2}' "$CONFIG_FILE" | tr -d '[:space:]' | sed 's/^'\''\(.*\)'\''$/\1/')
   NEO4J_PASSWORD=$(awk -F= '/^password/ {print $2}' "$CONFIG_FILE" | tr -d '[:space:]' | sed 's/^'\''\(.*\)'\''$/\1/')
 
   if [ -z "$NEO4J_PASSWORD" ]; then
@@ -16,7 +17,7 @@ if grep -q '\[neo4j\]' "$CONFIG_FILE"; then
     exit 1
   fi
 
-  echo "neo4j/$NEO4J_PASSWORD" > "$SECRETS_DIR/neo4j_auth.txt"
+  echo "$NEO4J_USER/$NEO4J_PASSWORD" > "$SECRETS_DIR/neo4j_auth.txt"
   chmod 600 "$SECRETS_DIR/neo4j_auth.txt"
   echo "Created Neo4j auth secret"
 else

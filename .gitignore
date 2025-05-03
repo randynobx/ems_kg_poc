@@ -21,7 +21,7 @@ Thumbs.db
 *.pid
 
 # Uploaded/temporary data
-web_backend/app/uploads/
+uploads
 data_uploads/
 sample_data/*.csv  # Only commit compressed zip files
 
@@ -34,3 +34,4 @@ config.ini
 # Neo4j data (never commit database state)
 neo4j_data/
 import_done
+!/config.ini

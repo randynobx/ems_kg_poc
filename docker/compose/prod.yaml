@@ -4,7 +4,7 @@ services:
       - "8000:8000"
     # No config.ini mount in production
 
-  neo4j_db:
+  neo4j-db:
     ports:
       - "7474:7474"
       - "7687:7687"
